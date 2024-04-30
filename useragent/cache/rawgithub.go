@@ -1,12 +1,13 @@
 package cache
 
 import (
-	"io/ioutil"
-	"github.com/EDDYCJY/fake-useragent/downloader"
-	"github.com/EDDYCJY/fake-useragent/setting"
-	"time"
 	"io"
+	"io/ioutil"
 	"net/http"
+	"time"
+
+	"github.com/itzngga/fake-useragent/downloader"
+	"github.com/itzngga/fake-useragent/setting"
 )
 
 type raw struct {
@@ -25,7 +26,7 @@ func NewRawCache(dir string, name string) *raw {
 
 func (f *raw) Get() (*http.Response, bool, error) {
 	downloader := downloader.Download{
-		Delay: setting.GetDelay(time.Duration(0)),
+		Delay:   setting.GetDelay(time.Duration(0)),
 		Timeout: setting.GetTimeout(time.Duration(0)),
 	}
 

@@ -2,8 +2,6 @@
 
 A wide variety of random useragents
 
-[简体中文](https://github.com/EDDYCJY/fake-useragent/blob/master/README_ZH.md)
-
 ## Support
 
 - All User-Agent Random
@@ -23,18 +21,18 @@ A wide variety of random useragents
 ## Installation
 
 ```
-$ go get github.com/EDDYCJY/fake-useragent
+$ go get browser
 ```
 
 ## Usage
 
-``` go
+```go
 package main
 
 import (
 	"log"
 
-	"github.com/EDDYCJY/fake-useragent"
+	"browser"
 )
 
 func main() {
@@ -84,7 +82,7 @@ func main() {
 
 You can adjust the maximum number of crawl pages and time intervals, maximum timeouts. If not, it is the default.
 
-``` go
+```go
 client := browser.Client{
 	MaxPage: 3,
 	Delay: 200 * time.Millisecond,
@@ -98,7 +96,7 @@ random := b.Random()
 
 Update the browser temporary file cache (re-get the source to get the latest data).
 
-``` go
+```go
 client := browser.Client{}
 cache := browser.Cache{
 	UpdateFile: true,
@@ -108,7 +106,7 @@ b := browser.NewBrowser(client, cache)
 
 ## Output
 
-``` sh
+```sh
 Random: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
 
 Chrome: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36

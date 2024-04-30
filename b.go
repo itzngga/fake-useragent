@@ -6,10 +6,10 @@ import (
 	"log"
 	"time"
 
-	"github.com/EDDYCJY/fake-useragent/setting"
-	"github.com/EDDYCJY/fake-useragent/spiders"
-	"github.com/EDDYCJY/fake-useragent/useragent"
-	"github.com/EDDYCJY/fake-useragent/useragent/cache"
+	"github.com/itzngga/fake-useragent/setting"
+	"github.com/itzngga/fake-useragent/spiders"
+	"github.com/itzngga/fake-useragent/useragent"
+	"github.com/itzngga/fake-useragent/useragent/cache"
 )
 
 type browser struct {

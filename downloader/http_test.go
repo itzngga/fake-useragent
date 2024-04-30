@@ -1,8 +1,9 @@
 package downloader
 
 import (
-	"github.com/EDDYCJY/fake-useragent/setting"
 	"testing"
+
+	"github.com/itzngga/fake-useragent/setting"
 )
 
 func TestDownload_Get(t *testing.T) {

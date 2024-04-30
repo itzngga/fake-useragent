@@ -1,8 +1,8 @@
 package browser
 
 import (
-	"github.com/EDDYCJY/fake-useragent/setting"
-	"github.com/EDDYCJY/fake-useragent/useragent"
+	"github.com/itzngga/fake-useragent/setting"
+	"github.com/itzngga/fake-useragent/useragent"
 )
 
 func Random() string {

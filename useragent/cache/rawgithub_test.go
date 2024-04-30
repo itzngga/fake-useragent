@@ -1,10 +1,11 @@
 package cache
 
 import (
-	"testing"
 	"fmt"
-	"github.com/EDDYCJY/fake-useragent/setting"
 	"net/http"
+	"testing"
+
+	"github.com/itzngga/fake-useragent/setting"
 )
 
 var r = NewRawCache(setting.CACHE_URL, fmt.Sprintf(setting.TEMP_FILE_NAME, setting.CACHE_VERSION))
@@ -31,7 +32,7 @@ func TestRaw_IsExist(t *testing.T) {
 
 func TestRaw_Read(t *testing.T) {
 	defer rawResp.Body.Close()
-	body ,err := r.Read(rawResp.Body)
+	body, err := r.Read(rawResp.Body)
 	if err != nil {
 		t.Errorf("r.Get err: %v", err)
 	}

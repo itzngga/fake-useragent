@@ -1,62 +1,84 @@
 package useragent
 
 import (
-	"math/rand"
-	"sync"
-	"time"
+	"github.com/puzpuzpuz/xsync/v3"
+	"math/rand/v2"
 )
 
 type useragent struct {
-	data map[string][]string
-	lock sync.Mutex
+	data     *xsync.MapOf[string, []string]
+	dataLen  *xsync.MapOf[int64, string]
+	totalLen *xsync.Counter
 }
 
 var (
-	UA = useragent{data: make(map[string][]string)}
-	r  = rand.New(rand.NewSource(time.Now().UnixNano()))
+	UA = useragent{data: xsync.NewMapOf[string, []string](), dataLen: xsync.NewMapOf[int64, string](), totalLen: xsync.NewCounter()}
 )
 
 func (u *useragent) Get(key string) []string {
-	return u.data[key]
+	data, _ := u.data.Load(key)
+	return data
 }
 
 func (u *useragent) GetAll() map[string][]string {
-	return u.data
+	var data = make(map[string][]string)
+	u.data.Range(func(key string, value []string) bool {
+		data[key] = value
+		return true
+	})
+	return data
 }
 
 func (u *useragent) GetRandom(key string) string {
 	browser := u.Get(key)
-	len := len(browser)
-	if len < 1 {
+	length := len(browser)
+	if length <= 0 {
 		return ""
 	}
 
-	n := r.Intn(len)
+	n := rand.IntN(length)
+	if n > length {
+		return ""
+	}
+
 	return browser[n]
 }
 
 func (u *useragent) GetAllRandom() string {
-	browsers := u.GetAll()
-	datas := []string{}
-	for _, uas := range browsers {
-		datas = append(datas, uas...)
+	if val, ok := u.dataLen.Load(rand.Int64N(u.totalLen.Value())); ok {
+		return u.GetRandom(val)
 	}
 
-	len := len(datas)
-	if len < 1 {
-		return ""
-	}
-
-	n := r.Intn(len)
-	return datas[n]
+	return ""
 }
 
 func (u *useragent) Set(key, value string) {
-	u.lock.Lock()
-	defer u.lock.Unlock()
-	u.data[key] = append(u.data[key], value)
+	data, ok := u.data.Load(key)
+	if ok {
+		data = append(data, value)
+	} else {
+		data = []string{value}
+	}
+
+	u.data.Store(key, data)
+	u.resetLen()
 }
 
 func (u *useragent) SetData(data map[string][]string) {
-	u.data = data
+	for k, v := range data {
+		u.data.Store(k, v)
+	}
+	u.resetLen()
+}
+
+func (u *useragent) resetLen() {
+	u.dataLen.Clear()
+	u.totalLen.Reset()
+	u.totalLen.Add(0)
+
+	u.data.Range(func(key string, value []string) bool {
+		u.dataLen.Store(u.totalLen.Value(), key)
+		u.totalLen.Inc()
+		return true
+	})
 }
